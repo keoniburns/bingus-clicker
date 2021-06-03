@@ -1,21 +1,86 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+import React from 'react';
+import HomeScreen from './src/screens/homeScreen'; 
+import PlayScreen from './src/screens/PlayScreen';
+import loadingScreen from './src/screens/loadingScreen'; 
+import loginScreen from './src/screens/loginScreen'; 
+import { NavigationContainer, useRoute } from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
+import awsconfig from './aws-exports'; 
+import Amplify  from 'aws-amplify'; 
+
+
+Amplify.configure({
+  ...awsconfig, 
+  Analytics: {
+    disabled: true, 
+  }, 
+}); 
+
+
+/*const navigator = createStackNavigator(
+  {
+    Home: HomeScreen, 
+    Play: PlayScreen, 
+    Load: loadingScreen, 
+    Login: loginScreen, 
+
+  },
+  {
+    HomeScreen : {
+      defaultNavigationOptions: {headerShown: false}
+    }
+  }, 
+  
+  {
+    initialRouteName: "Home", 
+    defaultNavigationOptions: { 
+    
+      title: ""}
+  }, 
+  
+  
+);
+*/ 
+
+const Stack = createStackNavigator(); 
+
+function App() {
+  return(
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName = 'Home'>
+
+        <Stack.Screen
+            name = 'Home'
+            component = {HomeScreen}
+            options = {{headerShown: false}}
+        />
+
+      <Stack.Screen
+            name = 'Load'
+            component = {loadingScreen}
+            options = {{title: ''}}
+      />
+
+      <Stack.Screen
+            name = 'Login'
+            component = {loginScreen}
+            
+      />
+
+      <Stack.Screen
+            name = 'Play'
+            component = {PlayScreen}
+            
+      />
+
+
+
+      </Stack.Navigator>
+
+    </NavigationContainer>
+  )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
+export default App;
